@@ -1,6 +1,10 @@
 plugins {
+    // Aplica o plugin de aplicação Android
     alias(libs.plugins.androidApplication)
+    // Aplica o plugin do Kotlin para Android, garantindo uma versão compatível
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    // Aplica o plugin do Google Services
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -51,4 +55,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth")
+    // Firebase Firestore (se você for usar o banco de dados)
+    implementation("com.google.firebase:firebase-firestore")
 }

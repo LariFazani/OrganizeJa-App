@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "987038095897",
+    "project_id": "organizeja-app",
+    "storage_bucket": "organizeja-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987038095897:android:5b445b94b957bddf226888",
+        "android_client_info": {
+          "package_name": "com.example.organizeja"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzl4vbP_fsurmZ99IhiJkF6JYY0gm6Chw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
