@@ -12,10 +12,20 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_trasacoes"
+        android:id="@+id/navigation_transacoes"
         android:name="com.example.organizeja.ui.transacoes.TransacoesFragment"
         android:label="@string/title_transacoes"
-        tools:layout="@layout/fragment_transacoes" />
+        tools:layout="@layout/fragment_transacoes" >
+        <action
+            android:id="@+id/action_transacoes_to_adicionarTransacao"
+            app:destination="@id/navigation_adicionar_transacao" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_adicionar_transacao"
+        android:name="com.example.organizeja.ui.transacoes.AdicionarTransacaoFragment"
+        android:label="@string/title_adicionar_transacoes"
+        tools:layout="@layout/fragment_adicionar_transacao" />
 
     <fragment
         android:id="@+id/navigation_configuracao"

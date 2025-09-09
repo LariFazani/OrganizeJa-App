@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -35,8 +34,6 @@ class CadastroActivity : AppCompatActivity() {
 
         // Lógica para o botão "Prosseguir"
         binding.prosseguirButton.setOnClickListener {
-            Log.d("CadastroActivity", "Botão Prosseguir clicado.")
-
             val email = binding.emailEditText.text.toString().trim()
             val cpf = binding.cpfEditText.text.toString().replace("[^\\d]".toRegex(), "")
             val password = binding.passwordEditText.text.toString()
@@ -44,67 +41,53 @@ class CadastroActivity : AppCompatActivity() {
 
             // Validação dos campos
             if (email.isEmpty() || cpf.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                Log.d("CadastroActivity", "Campos obrigatórios vazios.")
-                Toast.makeText(this, "Preencha todos os campos obrigatórios", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Preencha todos os campos obrigatórios", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Log.d("CadastroActivity", "Formato de e-mail inválido.")
-                Toast.makeText(this, "Formato de e-mail inválido", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor, insira um e-mail válido", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
             if (!validarCpf(cpf)) {
-                Log.d("CadastroActivity", "CPF inválido.")
-                Toast.makeText(this, "CPF inválido", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (password != confirmPassword) {
-                Log.d("CadastroActivity", "As senhas não coincidem.")
-                Toast.makeText(this, "As senhas não coincidem", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "CPF inválido", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
             if (!isValidPassword(password)) {
-                Log.d("CadastroActivity", "Senha não atende aos critérios de validação.")
-                Toast.makeText(this, "A senha deve ter no mínimo 8 caracteres, com pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "A senha deve ter pelo menos 8 caracteres, um dígito e um caractere especial", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            Log.d("CadastroActivity", "Todas as validações de campos passadas. Tentando criar usuário no Firebase.")
-            // Tenta criar o usuário com e-mail e senha no Firebase Auth
+            if (password != confirmPassword) {
+                Toast.makeText(this, "As senhas não coincidem", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            // Inicia o processo de cadastro no Firebase Auth
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        // Usuário criado com sucesso
-                        Log.d("CadastroActivity", "Usuário criado com sucesso no Firebase Auth.")
+                        // Cadastro no Firebase Auth bem-sucedido, agora salva os dados no Firestore
                         val user = firebaseAuth.currentUser
                         if (user != null) {
-                            // Tenta salvar os dados adicionais do usuário no Firestore
                             salvarDadosUsuario(user, email, cpf)
-                        } else {
-                            Log.e("CadastroActivity", "Erro: Usuário nulo após criação bem-sucedida.")
-                            navigateToLogin()
                         }
                     } else {
-                        // Se o cadastro falhar, exibe uma mensagem para o usuário
-                        Log.e("CadastroActivity", "Erro no cadastro do usuário: ${task.exception?.message}")
-                        Toast.makeText(this, "Erro no cadastro: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                        navigateToLogin()
+                        // Cadastro falhou
+                        Toast.makeText(this, "Falha no cadastro: ${task.exception?.message}", Toast.LENGTH_LONG).show()
                     }
                 }
         }
 
-        // Lógica para o link "Já tem uma conta? Faça login"
+        // Lógica para o link "login"
         binding.loginTextView.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
-        // Formatação de CPF
+        // Formatação de CPF (Exemplo simples: adiciona ponto e hífen automaticamente)
         binding.cpfEditText.addTextChangedListener(object : TextWatcher {
             private var current = ""
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -129,33 +112,24 @@ class CadastroActivity : AppCompatActivity() {
         })
     }
 
+    // Função para salvar os dados do usuário no Firestore
     private fun salvarDadosUsuario(user: FirebaseUser, email: String, cpf: String) {
-        Log.d("CadastroActivity", "Tentando salvar dados do usuário no Firestore.")
         val userData = hashMapOf(
             "email" to email,
             "cpf" to cpf
         )
-        // O ID do documento é o UID do usuário do Firebase Auth
-        firebaseFirestore.collection("usuarios").document(user.uid)
+        firebaseFirestore.collection("users").document(user.uid)
             .set(userData)
             .addOnSuccessListener {
-                Log.d("CadastroActivity", "Dados do usuário salvos com sucesso no Firestore.")
                 Toast.makeText(this, "Cadastro e dados salvos com sucesso!", Toast.LENGTH_LONG).show()
-                navigateToLogin()
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
             }
             .addOnFailureListener { e ->
-                Log.e("CadastroActivity", "Erro ao salvar dados do usuário no Firestore: ${e.message}")
                 Toast.makeText(this, "Erro ao salvar dados do usuário: ${e.message}", Toast.LENGTH_LONG).show()
-                // A navegação agora é independente da falha no Firestore
-                navigateToLogin()
             }
-    }
-
-    private fun navigateToLogin() {
-        Log.d("CadastroActivity", "Iniciando intent para LoginActivity.")
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish() // Encerra a atividade atual para que o usuário não possa voltar
     }
 
     private fun validarCpf(cpf: String): Boolean {
@@ -189,39 +163,24 @@ class CadastroActivity : AppCompatActivity() {
     // Função de validação de senha
     private fun isValidPassword(password: String): Boolean {
         // Valida se a senha tem pelo menos 8 caracteres
-        if (password.length < 8) {
-            Log.d("isValidPassword", "Senha muito curta.")
-            return false
-        }
+        if (password.length < 8) return false
 
         // Valida se a senha contém pelo menos um dígito
         val hasDigit = password.any { it.isDigit() }
-        if (!hasDigit) {
-            Log.d("isValidPassword", "Senha não contém dígito.")
-            return false
-        }
+        if (!hasDigit) return false
 
         // Valida se a senha contém pelo menos um caractere especial
         val hasSpecialChar = password.any { !it.isLetterOrDigit() }
-        if (!hasSpecialChar) {
-            Log.d("isValidPassword", "Senha não contém caractere especial.")
-            return false
-        }
+        if (!hasSpecialChar) return false
 
         // Valida se a senha contém pelo menos uma letra maiúscula
-        val hasUpperCase = password.any { it.isUpperCase() }
-        if (!hasUpperCase) {
-            Log.d("isValidPassword", "Senha não contém letra maiúscula.")
-            return false
-        }
+        val hasUppercase = password.any { it.isUpperCase() }
+        if (!hasUppercase) return false
 
         // Valida se a senha contém pelo menos uma letra minúscula
-        val hasLowerCase = password.any { it.isLowerCase() }
-        if (!hasLowerCase) {
-            Log.d("isValidPassword", "Senha não contém letra minúscula.")
-            return false
-        }
-        Log.d("isValidPassword", "Senha válida.")
+        val hasLowercase = password.any { it.isLowerCase() }
+        if (!hasLowercase) return false
+
         return true
     }
 }

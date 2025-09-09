@@ -2,5 +2,17 @@
     <string name="app_name">OrganizeJa</string>
     <string name="title_home">Início</string>
     <string name="title_transacoes">Transações</string>
+    <string name="title_adicionar_transacoes">Adicionar Transações</string>
     <string name="title_configuracao">Configuração</string>
+
+        <string-array name="categorias_array">
+            <item>Alimentação</item>
+            <item>Transporte</item>
+            <item>Moradia</item>
+            <item>Saúde</item>
+            <item>Educação</item>
+            <item>Lazer</item>
+            <item>Outros</item>
+        </string-array>
+
 </resources>
