@@ -4,17 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.adicionartransacao.AdicionarTransacaoFragment">
-
-    <!-- Toolbar superior para o título e o botão de fechar -->
-    <View
-        android:id="@+id/topBackground"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:background="#51BBC5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".ui.transacoes.AdicionarTransacaoFragment">
 
     <!-- Título "Adicionar transação" -->
     <TextView
@@ -22,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="Adicionar transação"
         android:textColor="#51BBC5"
         android:textSize="34sp"
@@ -63,7 +53,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 app:boxCornerRadiusBottomEnd="4dp"
                 app:boxCornerRadiusBottomStart="4dp"
                 app:boxCornerRadiusTopEnd="4dp"
@@ -97,7 +87,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 app:boxCornerRadiusBottomEnd="4dp"
                 app:boxCornerRadiusBottomStart="4dp"
                 app:boxCornerRadiusTopEnd="4dp"
@@ -128,23 +118,23 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/dataInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="2dp"
-                app:boxCornerRadiusBottomEnd="4dp"
-                app:boxCornerRadiusBottomStart="4dp"
-                app:boxCornerRadiusTopEnd="4dp"
-                app:boxCornerRadiusTopStart="4dp"
+                android:layout_height="wrap_content"
+                app:startIconContentDescription="Selecione a data"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_calendar_24dp"
+                app:endIconContentDescription="Abrir seletor de data"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dataLabel">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dataEditText"
+                    android:id="@+id/data_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="date"/>
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Grupo de botões para selecionar o tipo (Receita ou Despesa) -->
@@ -164,7 +154,7 @@
                 android:id="@+id/toggleButtonGroupTipo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewTipo"
@@ -205,47 +195,58 @@
                 android:id="@+id/spinnerCategoria"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewCategoria" />
 
             <!-- Botão para salvar a transação -->
-            <Button
-                android:id="@+id/buttonSalvar"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="#25AD57"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:text="Salvar"
-                android:textColor="@android:color/white"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="14sp"
-                app:cornerRadius="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/spinnerCategoria" />
-
             <!-- Botão para cancelar -->
-            <Button
-                android:id="@+id/buttonCancelar"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="4dp"
-                android:backgroundTint="#ffffff"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:text="Cancelar"
-                android:textColor="#B60101"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="14sp"
-                app:cornerRadius="4dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonSalvar" />
+                app:layout_constraintTop_toBottomOf="@id/spinnerCategoria" >
+
+                <Button
+                    android:id="@+id/buttonCancelar"
+                    android:layout_width="174dp"
+                    android:layout_height="60dp"
+                    android:backgroundTint="#ffffff"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="Cancelar"
+                    android:textColor="#B60101"
+                    android:textSize="14sp"
+                    app:cornerRadius="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <Button
+                    android:id="@+id/buttonSalvar"
+                    android:layout_width="174dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="12dp"
+                    android:backgroundTint="#25AD57"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="Salvar"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    app:cornerRadius="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

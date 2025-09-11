@@ -9,14 +9,14 @@
         android:id="@+id/balanceCardView"
         android:layout_width="0dp"
         android:layout_height="120dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="24dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -28,6 +28,8 @@
                 android:id="@+id/myBalanceLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="Meu saldo"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
@@ -40,6 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
                 android:text="$3.469,52"
                 android:textColor="@android:color/black"
                 android:textSize="28sp"
@@ -61,7 +64,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
-    <!-- Adicione outros elementos da tela aqui, se necessário -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

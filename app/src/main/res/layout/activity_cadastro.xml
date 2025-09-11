@@ -7,23 +7,13 @@
     android:background="@android:color/white"
     tools:context=".CadastroActivity">
 
-    <!-- Fundo superior na cor teal/ciano -->
-    <View
-        android:id="@+id/topBackground"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:background="#51BBC5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <!-- Título "Cadastro" -->
     <TextView
         android:id="@+id/titleCadastroTextView"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:text="Cadastro"
         android:textColor="#51BBC5"
         android:textSize="36sp"
