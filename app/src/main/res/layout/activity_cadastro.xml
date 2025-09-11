@@ -74,13 +74,13 @@
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Campo CPF -->
+            <!-- Campo nome de usuário -->
             <TextView
-                android:id="@+id/cpfLabel"
+                android:id="@+id/nomeusuarioLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="CPF"
+                android:text="Nome de usuário"
                 android:textColor="@android:color/black"
                 android:fontFamily="@font/opensans_bold"
                 android:textSize="16sp"
@@ -88,7 +88,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/emailInputLayout" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/cpfInputLayout"
+                android:id="@+id/nomeusuarioInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
@@ -99,14 +99,13 @@
                 app:boxCornerRadiusTopStart="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cpfLabel">
+                app:layout_constraintTop_toBottomOf="@+id/nomeusuarioLabel">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/cpfEditText"
+                    android:id="@+id/nomeusuarioEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLength="14" />
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Campo Senha -->
@@ -120,7 +119,7 @@
                 android:fontFamily="@font/opensans_bold"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cpfInputLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/nomeusuarioInputLayout" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordInputLayout"
