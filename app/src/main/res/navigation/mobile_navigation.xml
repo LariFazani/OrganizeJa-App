@@ -24,8 +24,24 @@
     <fragment
         android:id="@+id/navigation_adicionar_transacao"
         android:name="com.example.organizeja.ui.transacoes.AdicionarTransacaoFragment"
-        android:label="@string/title_adicionar_transacoes"
+        android:label="@string/title_adicionar_transacao"
         tools:layout="@layout/fragment_adicionar_transacao" />
+
+    <fragment
+        android:id="@+id/navigation_metas"
+        android:name="com.example.organizeja.ui.metas.MetasFragment"
+        android:label="@string/title_metas"
+        tools:layout="@layout/fragment_metas" >
+    <action
+        android:id="@+id/action_metas_to_adicionarMeta"
+        app:destination="@id/navigation_adicionar_meta" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_adicionar_meta"
+        android:name="com.example.organizeja.ui.adicionarmeta.AdicionarMetaFragment"
+        android:label="@string/title_adicionar_meta"
+        tools:layout="@layout/fragment_adicionar_meta" />
 
     <fragment
         android:id="@+id/navigation_configuracao"

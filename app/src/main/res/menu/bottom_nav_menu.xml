@@ -12,6 +12,11 @@
         android:title="@string/title_transacoes" />
 
     <item
+        android:id="@+id/navigation_metas"
+        android:icon="@drawable/ic_metas_black_24dp"
+        android:title="@string/title_metas" />
+
+    <item
         android:id="@+id/navigation_configuracao"
         android:icon="@drawable/ic_configuracao_black_24dp"
         android:title="@string/title_configuracao" />

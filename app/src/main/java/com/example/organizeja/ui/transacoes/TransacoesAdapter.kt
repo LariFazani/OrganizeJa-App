@@ -1,3 +1,4 @@
+// TransacoesAdapter.kt
 package com.example.organizeja.ui.transacoes
 
 import android.graphics.Color
@@ -29,6 +30,13 @@ class TransacoesAdapter(private var transacoes: List<Transacao>) :
     // Retorna o número total de itens na lista.
     override fun getItemCount(): Int = transacoes.size
 
+    // Adiciona uma nova função para atualizar a lista de transações
+    fun updateTransactions(newTransactions: List<Transacao>) {
+        // Agora 'transacoes' e 'notifyDataSetChanged()' estão no escopo correto.
+        this.transacoes = newTransactions
+        notifyDataSetChanged()
+    }
+
     // ViewHolder para o item da transação.
     class TransacaoViewHolder(private val binding: ItemTransacaoBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -43,23 +51,19 @@ class TransacoesAdapter(private var transacoes: List<Transacao>) :
                 binding.textDate.text = dateFormat.format(it)
             }
 
-            // Formata e define o valor, alterando a cor com base no tipo.
+            // --- Lógica para cor e sinal ---
+            // Formata o valor monetário.
             val numberFormat = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
             val valorFormatado = numberFormat.format(transacao.valor)
-            binding.textAmount.text = valorFormatado
 
-            val color = if (transacao.tipo == "Receita") {
-                Color.parseColor("#4CAF50") // Verde
+            // Define a cor e o texto (com o sinal) com base no tipo de transação.
+            if (transacao.tipo == "Receita") {
+                binding.textAmount.setTextColor(Color.parseColor("#4CAF50")) // Verde
+                binding.textAmount.text = "+ $valorFormatado"
             } else {
-                Color.parseColor("#F44336") // Vermelho
+                binding.textAmount.setTextColor(Color.parseColor("#F44336")) // Vermelho
+                binding.textAmount.text = "- $valorFormatado"
             }
-            binding.textAmount.setTextColor(color)
         }
-    }
-
-    // Adiciona uma nova função para atualizar a lista de transações
-    fun updateTransactions(newTransactions: List<Transacao>) {
-        this.transacoes = newTransactions
-        notifyDataSetChanged()
     }
 }

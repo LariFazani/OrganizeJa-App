@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.organizeja.R
 import com.example.organizeja.databinding.FragmentAdicionarTransacaoBinding
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -48,18 +49,15 @@ class AdicionarTransacaoFragment : Fragment() {
 
         // Lida com o clique do botão de salvar
         binding.buttonSalvar.setOnClickListener {
-            // Lógica para salvar a transação
-            // Você pode adicionar a validação dos campos aqui
-            Toast.makeText(context, "Salvar Clicado!", Toast.LENGTH_SHORT).show()
+            // Chama a função de validação e salvamento
+            salvarTransacao()
         }
 
         // Lida com o clique do botão de cancelar
         binding.buttonCancelar.setOnClickListener {
-            // Lógica para cancelar e fechar a tela
-            //navigation.findNavController().popBackStack()
-            Toast.makeText(context, "Cancelar Clicado!", Toast.LENGTH_SHORT).show()
+            // Retorna para a tela anterior
+            findNavController().popBackStack()
         }
-
     }
 
     private fun setupCategoriaSpinner() {
@@ -172,6 +170,37 @@ class AdicionarTransacaoFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun salvarTransacao() {
+        val descricao = binding.descricaoEditText.text.toString().trim()
+        val valorStr = binding.valorEditText.text.toString().trim()
+        val dataStr = binding.dataEditText.text.toString().trim()
+        val categoriaSelecionada = binding.spinnerCategoria.selectedItemPosition
+
+        // Verifica se a descrição, o valor e o tipo de transação foram preenchidos.
+        val tipoSelecionado = binding.toggleButtonGroupTipo.checkedButtonId != -1
+
+        // Validação principal: todos os campos obrigatórios
+        if (descricao.isEmpty() || valorStr.isEmpty() || !tipoSelecionado || categoriaSelecionada == 0) {
+            Toast.makeText(context, "Por favor, preencha todos os campos e selecione uma categoria.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Validação da data
+        try {
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
+            dateFormat.isLenient = false // Garante que a data seja estrita
+            dateFormat.parse(dataStr)
+
+            // Se a validação da data passar, o código continua
+            Toast.makeText(context, "Transação salva com sucesso!", Toast.LENGTH_SHORT).show()
+            findNavController().popBackStack()
+
+        } catch (e: Exception) {
+            // Se a data for inválida
+            Toast.makeText(context, "Por favor, insira uma data completa.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {

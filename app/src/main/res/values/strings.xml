@@ -1,10 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OrganizeJa</string>
+    <string name="app_name">Organize Já</string>
+
+    <!-- Títulos da ActionBar e da Bottom Navigation -->
     <string name="title_home">Início</string>
     <string name="title_transacoes">Transações</string>
-    <string name="title_adicionar_transacoes">Adicionar Transações</string>
+    <string name="title_adicionar_transacao">Adicionar Transações</string>
+    <string name="title_metas">Metas</string>
+    <string name="title_adicionar_meta">Adicionar Metas</string>
     <string name="title_configuracao">Configuração</string>
 
+    <!-- Categorias das transações -->
         <string-array name="categorias_array">
             <item>Alimentação</item>
             <item>Transporte</item>

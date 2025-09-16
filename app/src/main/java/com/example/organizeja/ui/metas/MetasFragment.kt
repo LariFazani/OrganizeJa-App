@@ -1,4 +1,4 @@
-package com.example.organizeja.ui.transacoes
+package com.example.organizeja.ui.metas
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,52 +9,51 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.organizeja.R
-import com.example.organizeja.databinding.FragmentTransacoesBinding
+import com.example.organizeja.databinding.FragmentMetasBinding
 
-class TransacoesFragment : Fragment() {
+class MetasFragment : Fragment() {
 
-    private var _binding: FragmentTransacoesBinding? = null
+    private var _binding: FragmentMetasBinding? = null
     private val binding get() = _binding!!
-    private lateinit var transacoesAdapter: TransacoesAdapter
+    private lateinit var metasAdapter: MetasAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val transacoesViewModel =
-            ViewModelProvider(this).get(TransacoesViewModel::class.java)
+        val metasViewModel = ViewModelProvider(this).get(MetasViewModel::class.java)
 
-        _binding = FragmentTransacoesBinding.inflate(inflater, container, false)
+        _binding = FragmentMetasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // Inicializa o adaptador com uma lista vazia.
-        transacoesAdapter = TransacoesAdapter(emptyList())
+        // Inicializa o adaptador com uma lista vazia
+        metasAdapter = MetasAdapter(emptyList())
 
         // Configura o RecyclerView
-        binding.transactionsRecyclerView.apply {
+        binding.metasRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = transacoesAdapter
+            adapter = metasAdapter
         }
 
-        // Observa a lista de transações do ViewModel e atualiza o RecyclerView
-        transacoesViewModel.transactions.observe(viewLifecycleOwner) { transactionsList ->
-            if (transactionsList.isEmpty()) {
+        // Observa a lista de metas do ViewModel e atualiza o RecyclerView
+        metasViewModel.meta.observe(viewLifecycleOwner) { metasList ->
+            if (metasList.isEmpty()) {
                 // Se a lista estiver vazia, mostra a mensagem e esconde o RecyclerView
-                binding.transactionsRecyclerView.visibility = View.GONE
+                binding.metasRecyclerView.visibility = View.GONE
                 binding.emptyListTextView.visibility = View.VISIBLE
             } else {
                 // Se houver itens, mostra o RecyclerView e esconde a mensagem
-                binding.transactionsRecyclerView.visibility = View.VISIBLE
+                binding.metasRecyclerView.visibility = View.VISIBLE
                 binding.emptyListTextView.visibility = View.GONE
-                transacoesAdapter.updateTransactions(transactionsList)
+                metasAdapter.updateMetas(metasList)
             }
         }
 
         // Adiciona um listener de clique ao novo botão de ação flutuante (FAB)
-        binding.addTransacoesButton.setOnClickListener {
+        binding.addMetaButton.setOnClickListener {
             // Navega para a tela de adicionar transação
-            findNavController().navigate(R.id.action_transacoes_to_adicionarTransacao)
+            findNavController().navigate(R.id.action_metas_to_adicionarMeta)
         }
 
         return root

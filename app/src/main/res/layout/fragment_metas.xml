@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.transacoes.TransacoesFragment">
+    tools:context=".ui.metas.MetasFragment">
 
-    <!-- RecyclerView para exibir as transações -->
+    <!-- RecyclerView para a lista de metas -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/transactionsRecyclerView"
+        android:id="@+id/metasRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -16,14 +16,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_transacao" />
+        tools:listitem="@layout/item_metas" />
 
     <!-- Mensagem para quando a lista estiver vazia -->
     <TextView
         android:id="@+id/emptyListTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nenhuma transação encontrada."
+        android:text="Nenhuma meta encontrada."
         android:textSize="18sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,9 +31,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Botão de Adicionar Transação (FAB) -->
+    <!-- Botão de ação flutuante para adicionar uma nova meta -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addTransacoesButton"
+        android:id="@+id/addMetaButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
