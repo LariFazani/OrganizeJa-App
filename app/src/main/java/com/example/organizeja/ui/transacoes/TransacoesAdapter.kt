@@ -11,58 +11,57 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-// O adapter é responsável por vincular os dados da lista Transacao aos itens da RecyclerView.
-class TransacoesAdapter(private var transacoes: List<Transacao>) :
-    RecyclerView.Adapter<TransacoesAdapter.TransacaoViewHolder>() {
+// Define a interface para o clique do botão
+interface OnTransacaoDeleteListener {
+    fun onDeleteClick(transacao: Transacao)
+}
 
-    // Cria e retorna um ViewHolder para o layout do item.
+class TransacoesAdapter(
+    private var transacoes: List<Transacao>,
+    private val deleteListener: OnTransacaoDeleteListener
+) : RecyclerView.Adapter<TransacoesAdapter.TransacaoViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransacaoViewHolder {
         val binding = ItemTransacaoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TransacaoViewHolder(binding)
     }
 
-    // Vincula os dados a uma ViewHolder específica.
     override fun onBindViewHolder(holder: TransacaoViewHolder, position: Int) {
         val transacao = transacoes[position]
-        holder.bind(transacao)
+        holder.bind(transacao, deleteListener)
     }
 
-    // Retorna o número total de itens na lista.
     override fun getItemCount(): Int = transacoes.size
 
-    // Adiciona uma nova função para atualizar a lista de transações
     fun updateTransactions(newTransactions: List<Transacao>) {
-        // Agora 'transacoes' e 'notifyDataSetChanged()' estão no escopo correto.
         this.transacoes = newTransactions
         notifyDataSetChanged()
     }
 
-    // ViewHolder para o item da transação.
     class TransacaoViewHolder(private val binding: ItemTransacaoBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(transacao: Transacao) {
-            // Define a categoria e o nome da transação.
+        fun bind(transacao: Transacao, deleteListener: OnTransacaoDeleteListener) {
             binding.textCategory.text = transacao.categoria
             binding.textTransactionName.text = transacao.descricao
 
-            // Formata a data se ela não for nula.
             transacao.data?.let {
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
                 binding.textDate.text = dateFormat.format(it)
             }
 
-            // --- Lógica para cor e sinal ---
-            // Formata o valor monetário.
             val numberFormat = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
             val valorFormatado = numberFormat.format(transacao.valor)
 
-            // Define a cor e o texto (com o sinal) com base no tipo de transação.
             if (transacao.tipo == "Receita") {
-                binding.textAmount.setTextColor(Color.parseColor("#4CAF50")) // Verde
+                binding.textAmount.setTextColor(Color.parseColor("#4CAF50"))
                 binding.textAmount.text = "+ $valorFormatado"
             } else {
-                binding.textAmount.setTextColor(Color.parseColor("#F44336")) // Vermelho
+                binding.textAmount.setTextColor(Color.parseColor("#F44336"))
                 binding.textAmount.text = "- $valorFormatado"
+            }
+
+            // Define o clique do botão de exclusão
+            binding.buttonDelete.setOnClickListener {
+                deleteListener.onDeleteClick(transacao)
             }
         }
     }

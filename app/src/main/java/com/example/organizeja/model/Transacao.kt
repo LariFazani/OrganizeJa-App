@@ -1,27 +1,28 @@
 package com.example.organizeja.model
 
 import com.google.firebase.firestore.ServerTimestamp
+import com.google.firebase.firestore.PropertyName
 import java.util.Date
 
 data class Transacao(
-    // ID da transação (usado principalmente para o Firestore)
-    // Pode ser gerado pelo próprio Firestore ao adicionar o documento
     var id: String = "",
 
-    // Descrição da transação (ex: "Compras no mercado", "Salário")
+    @get:PropertyName("description") @set:PropertyName("description")
     var descricao: String = "",
 
-    // Valor da transação. Usar Double para valores monetários é comum.
+    @get:PropertyName("amount") @set:PropertyName("amount")
     var valor: Double = 0.0,
 
-    // Tipo de transação: "Receita" ou "Despesa"
+    @get:PropertyName("type") @set:PropertyName("type")
     var tipo: String = "",
 
-    // Campo opcional para categorizar a transação (ex: "Alimentação", "Transporte")
+    @get:PropertyName("category") @set:PropertyName("category")
     var categoria: String = "",
-    // Carimbo de data/hora do servidor do Firestore.
-    // Isso garante que a data seja a do momento em que o documento foi criado no banco de dados.
-    // É uma boa prática para evitar problemas de fuso horário.
+
     @ServerTimestamp
-    var data: Date? = null
+    @get:PropertyName("date") @set:PropertyName("date")
+    var data: Date? = null,
+
+    @get:PropertyName("userId") @set:PropertyName("userId")
+    var userId: String = ""
 )

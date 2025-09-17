@@ -1,3 +1,4 @@
+// TransacoesFragment.kt
 package com.example.organizeja.ui.transacoes
 
 import android.os.Bundle
@@ -10,54 +11,76 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.organizeja.R
 import com.example.organizeja.databinding.FragmentTransacoesBinding
+import com.example.organizeja.model.Transacao
+import android.app.AlertDialog
+import android.widget.Toast
+import androidx.fragment.app.setFragmentResultListener
 
-class TransacoesFragment : Fragment() {
+class TransacoesFragment : Fragment(), OnTransacaoDeleteListener {
 
     private var _binding: FragmentTransacoesBinding? = null
     private val binding get() = _binding!!
     private lateinit var transacoesAdapter: TransacoesAdapter
+    private lateinit var transacoesViewModel: TransacoesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val transacoesViewModel =
-            ViewModelProvider(this).get(TransacoesViewModel::class.java)
-
         _binding = FragmentTransacoesBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        // Inicializa o adaptador com uma lista vazia.
-        transacoesAdapter = TransacoesAdapter(emptyList())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        // Configura o RecyclerView
+        transacoesViewModel = ViewModelProvider(this).get(TransacoesViewModel::class.java)
+
+        // Inicializa o adaptador e o RecyclerView
+        transacoesAdapter = TransacoesAdapter(emptyList(), this)
         binding.transactionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = transacoesAdapter
         }
 
-        // Observa a lista de transações do ViewModel e atualiza o RecyclerView
+        // Observa a lista de transações do ViewModel
         transacoesViewModel.transactions.observe(viewLifecycleOwner) { transactionsList ->
             if (transactionsList.isEmpty()) {
-                // Se a lista estiver vazia, mostra a mensagem e esconde o RecyclerView
                 binding.transactionsRecyclerView.visibility = View.GONE
                 binding.emptyListTextView.visibility = View.VISIBLE
             } else {
-                // Se houver itens, mostra o RecyclerView e esconde a mensagem
                 binding.transactionsRecyclerView.visibility = View.VISIBLE
                 binding.emptyListTextView.visibility = View.GONE
                 transacoesAdapter.updateTransactions(transactionsList)
             }
         }
 
-        // Adiciona um listener de clique ao novo botão de ação flutuante (FAB)
+        // Remove a chamada do listener daqui, pois o onViewCreated é executado apenas uma vez.
+        // A chamada será feita no onStart() para garantir a atualização.
+
         binding.addTransacoesButton.setOnClickListener {
-            // Navega para a tela de adicionar transação
             findNavController().navigate(R.id.action_transacoes_to_adicionarTransacao)
         }
+    }
 
-        return root
+    override fun onStart() {
+        super.onStart()
+        // O listener do Firestore é ativado aqui, garantindo que a lista seja
+        // atualizada sempre que o fragmento se tornar visível.
+        transacoesViewModel.listenForTransactions()
+    }
+
+    override fun onDeleteClick(transacao: Transacao) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Excluir Transação")
+            .setMessage("Tem certeza que deseja excluir esta transação?")
+            .setPositiveButton("Sim") { _, _ ->
+                transacoesViewModel.deleteTransaction(transacao.id)
+                Toast.makeText(context, "Transação excluída!", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Não", null)
+            .show()
     }
 
     override fun onDestroyView() {

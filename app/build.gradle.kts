@@ -61,6 +61,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
-    // Firebase Firestore (se você for usar o banco de dados)
+    // Firebase Firestore
     implementation("com.google.firebase:firebase-firestore")
 }

@@ -15,6 +15,19 @@
         android:padding="16dp">
 
         <!-- Categoria da transação (texto cinza em cima) -->
+        <ImageView
+            android:id="@+id/button_delete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="Excluir transação"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#D32F2F"
+            app:srcCompat="@drawable/ic_delete" />
+
+        <!-- Nome da transação (texto preto abaixo da categoria) -->
         <TextView
             android:id="@+id/text_category"
             android:layout_width="wrap_content"
@@ -22,16 +35,16 @@
             android:fontFamily="@font/poppins_regular"
             android:textColor="#979797"
             android:textSize="12sp"
+            android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Categoria" />
 
-        <!-- Nome da transação (texto preto abaixo da categoria) -->
         <TextView
             android:id="@+id/text_transaction_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/poppins_semibold"
             android:textColor="#343434"
             android:textSize="16sp"
@@ -45,7 +58,7 @@
             android:id="@+id/text_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/poppins_regular"
             android:textColor="#979797"
             android:textSize="12sp"
@@ -61,6 +74,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="16sp"
+            android:layout_marginTop="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
