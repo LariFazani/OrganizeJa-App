@@ -3,6 +3,7 @@ package com.example.organizeja.model
 import com.google.firebase.firestore.PropertyName
 
 data class Meta(
+
     var id: String = "",
 
     @get:PropertyName("goalName") @set:PropertyName("goalName")
