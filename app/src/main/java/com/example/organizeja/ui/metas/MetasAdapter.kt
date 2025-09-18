@@ -15,22 +15,17 @@ class MetasAdapter(
     class MetaViewHolder(private val binding: ItemMetasBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        // Função que vincula os dados da meta com os elementos de UI
         fun bind(meta: Meta) {
             binding.nomeMetaTextView.text = meta.nome
 
-            // Formata o valor economizado e o valor total para exibição
             val formatadorMoeda = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
-            val valorEconomizado = meta.valorEconomizado // Assume que a Meta terá essa propriedade
-            val valorTotal = meta.valorTotal // Assume que o valor total é a propriedade 'valor'
-
+            val valorEconomizado = meta.valorEconomizado
+            val valorTotal = meta.valorTotal
 
             binding.valorEconomizadoMetaTextView.text = "${formatadorMoeda.format(valorEconomizado)}"
-
             binding.valorTotalMetaTextView.text = "${formatadorMoeda.format(valorTotal)}"
 
-            // Calcula o progresso e atualiza a barra de progresso
-            val progresso = (valorEconomizado / valorTotal * 100).toInt()
+            val progresso = if (valorTotal > 0) (valorEconomizado / valorTotal * 100).toInt() else 0
             binding.progressoMetaProgressBar.progress = progresso
         }
     }
@@ -50,7 +45,6 @@ class MetasAdapter(
 
     override fun getItemCount(): Int = metaList.size
 
-    // Função para atualizar a lista de metas
     fun updateMetas(newMetas: List<Meta>) {
         metaList = newMetas
         notifyDataSetChanged()

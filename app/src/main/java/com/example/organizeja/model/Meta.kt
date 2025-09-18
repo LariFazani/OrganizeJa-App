@@ -1,17 +1,19 @@
 package com.example.organizeja.model
 
+import com.google.firebase.firestore.PropertyName
+
 data class Meta(
-    // ID da transação (usado principalmente para o Firestore)
-    // Pode ser gerado pelo próprio Firestore ao adicionar o documento
     var id: String = "",
 
-    // Nome da Meta
+    @get:PropertyName("goalName") @set:PropertyName("goalName")
     var nome: String = "",
 
-    // Valor total da meta
+    @get:PropertyName("targetAmount") @set:PropertyName("targetAmount")
     var valorTotal: Double = 0.0,
 
-    // Valor economizado até o momento
-    var valorEconomizado: Double = 0.0
+    @get:PropertyName("savedAmount") @set:PropertyName("savedAmount") // Removido o espaço
+    var valorEconomizado: Double = 0.0,
 
+    @get:PropertyName("userId") @set:PropertyName("userId")
+    var userId: String = "" // Adicionado o campo userId
 )

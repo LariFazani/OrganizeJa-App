@@ -3,46 +3,56 @@ package com.example.organizeja.ui.metas
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.organizeja.model.Meta
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.launch
 
 class MetasViewModel : ViewModel() {
 
-    // Lista de metas
-    private val _meta = MutableLiveData<List<Meta>>()
-    val meta: LiveData<List<Meta>> = _meta
+    private val db = FirebaseFirestore.getInstance()
+    private val metasCollection = db.collection("goals")
+
+    private val _metas = MutableLiveData<List<Meta>>()
+    val metas: LiveData<List<Meta>> = _metas
+
+    // Use o ID de usuário do seu sistema de autenticação. Este é um exemplo.
+    private val userId = "Exemplo_user_id"
+
+    private var metasListener: ListenerRegistration? = null
 
     init {
-        // Carrega dados de exemplo
-        loadSampleMetas()
+        // Conecta ao Firestore para observar as metas em tempo real
+        metasListener = metasCollection
+            .whereEqualTo("userId", userId)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    // Trate os erros aqui, se necessário
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val metasList = snapshot.documents.mapNotNull { document ->
+                        val meta = document.toObject(Meta::class.java)
+                        meta?.id = document.id
+                        meta
+                    }
+                    _metas.value = metasList
+                }
+            }
     }
 
-    private fun loadSampleMetas() {
-        val sampleList = listOf(
-            Meta(
-                id = "1",
-                nome = "Viagem para a Europa",
-                valorTotal = 20000.00,
-                valorEconomizado = 3500.00
-            ),
-            Meta(
-                id = "2",
-                nome = "Comprar um Carro",
-                valorTotal = 50000.00,
-                valorEconomizado = 15000.00
-            ),
-            Meta(
-                id = "3",
-                nome = "Fazer um curso",
-                valorTotal = 2500.00,
-                valorEconomizado = 1200.00
-            ),
-            Meta(
-                id = "4",
-                nome = "Presente de Aniversário",
-                valorTotal = 500.00,
-                valorEconomizado = 50.00
-            )
-        )
-        _meta.value = sampleList
+    // Função para adicionar uma nova meta ao Firestore
+    fun addMeta(meta: Meta) {
+        viewModelScope.launch {
+            metasCollection.add(meta)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        // Remove o ouvinte para evitar vazamentos de memória
+        metasListener?.remove()
     }
 }
