@@ -22,7 +22,6 @@ data class Transacao(
     @ServerTimestamp
     @get:PropertyName("date") @set:PropertyName("date")
     var data: Date? = null,
-
     @get:PropertyName("userId") @set:PropertyName("userId")
     var userId: String = ""
 )
